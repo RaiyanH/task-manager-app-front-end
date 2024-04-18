@@ -1,16 +1,18 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 
-const TaskDescription = ({ value, onChange }) => {
+const Description = ({ value, onChange }) => {
 	return (
 		<TextField
 			label="Description"
+			margin="dense"
 			multiline
 			rows={4}
+			fullWidth
 			value={value}
 			onChange={onChange}
 		/>
 	);
 };
 
-export default TaskDescription;
+export default Description;

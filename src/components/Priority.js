@@ -4,17 +4,16 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-const TaskPriority = ({ priority, handlePriorityChange }) => {
-	console.log("Current priority:", priority);
+const Priority = ({ value, onChange }) => {
+	console.log("Current priority:", value);
 
 	return (
-		<FormControl sx={{ width: "25%" }}>
-			<InputLabel htmlFor="priority">Priority</InputLabel>
+		<FormControl fullWidth margin="dense">
+			<InputLabel label="priority-label">Priority</InputLabel>
 			<Select
-				id="priority"
-				value={priority}
-				onChange={handlePriorityChange}
-				label="Priority"
+				label="priority-label"
+				value={value}
+				onChange={onChange}
 			>
 				<MenuItem value="1">1</MenuItem>
 				<MenuItem value="2">2</MenuItem>
@@ -26,4 +25,4 @@ const TaskPriority = ({ priority, handlePriorityChange }) => {
 	);
 };
 
-export default TaskPriority;
+export default Priority;

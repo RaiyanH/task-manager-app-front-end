@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TaskForm from "./TaskForm";
 import TaskDisplayCard from "./TaskDisplayCard";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, MenuItem, FormControl, Select } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 const TaskManager = () => {
@@ -13,6 +13,9 @@ const TaskManager = () => {
 
 	// State to hold the currently selected task for editing
 	const [selectedTask, setSelectedTask] = useState(null);
+
+	// Default to show all tasks' catagories
+	const [selectedCategory, setSelectedCategory] = useState("all");
 
 	// Function to add a new task
 	const handleAddTask = (newTask) => {
@@ -61,17 +64,36 @@ const TaskManager = () => {
 		}
 	};
 
+	// Function to handle user selecting a category filter
+	const handleCategoryChange = (event) => {
+		setSelectedCategory(event.target.value);
+	};
+
 	return (
-		<div padding={"20px"}>
+		<div>
 			<div
 				style={{
-					padding: "8px",
-					borderRadius: "4px",
+					paddingLeft: "20px",
+					backgroundColor: "#212121",
+					display: "flex",
+					justifyContent: "space-between",
+					//alignItems: "center",
 				}}
 			>
+				<Select
+					value={selectedCategory}
+					onChange={handleCategoryChange}
+					style={{ color: "white", marginRight: "10px", fontSize: "16px" }}
+				>
+					<MenuItem value="all">All Tasks</MenuItem>
+					<MenuItem value="to-do">To Do</MenuItem>
+					<MenuItem value="progress">In Progress</MenuItem>
+					<MenuItem value="completed">Completed</MenuItem>
+					<MenuItem value="done">Done</MenuItem>
+				</Select>
 				<Button
 					size="large"
-					style={{ backgroundColor: "#212121", color: "white" }}
+					style={{ color: "white", fontSize: "16px", textTransform: "none", paddingRight:"20px" }}
 					aria-label="add"
 					onClick={handleOpenForm}
 				>
@@ -99,7 +121,6 @@ const TaskManager = () => {
 					<Grid
 						item
 						key={task}
-						//xs={12 / getColumns()} // Responsive column size based on screen width
 						xs={12}
 						sm={6}
 						md={6}

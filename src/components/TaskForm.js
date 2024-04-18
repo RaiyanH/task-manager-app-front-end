@@ -5,13 +5,13 @@ import {
 	DialogContent,
 	DialogActions,
 	DialogContentText,
-	TextField,
 	Button,
-	Select,
-	MenuItem,
-	FormControl,
-	InputLabel,
 } from "@mui/material";
+
+import Title from "./Title";
+import Description from "./Description";
+import Priority from "./Priority";
+import Deadline from "./Deadline";
 
 const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 	const [title, setTitle] = useState(
@@ -20,7 +20,6 @@ const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 	const [description, setDescription] = useState(
 		initialTask.description ? initialTask.description : ""
 	);
-
 	const [priority, setPriority] = useState(
 		initialTask.priority ? initialTask.priority : "3"
 	);
@@ -60,18 +59,6 @@ const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 		setIsFormOpen(false);
 	};
 
-	// The following hook and two functions are there to fix the overlapping style issue in Deadline.
-
-	const [showFormat, setShowFormat] = useState(false);
-
-	const handleFocus = () => {
-		setShowFormat(true);
-	};
-
-	const handleBlur = () => {
-		setShowFormat(false);
-	};
-
 	return (
 		<Dialog open={isFormOpen} onClose={handleClose}>
 			<DialogTitle>
@@ -79,64 +66,28 @@ const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 			</DialogTitle>
 			<DialogContent>
 				<DialogContentText>
-					Please fill out the form to {Object.keys(initialTask).length > 0 ? "update" : "add"} a task.
+					Please fill out the form to{" "}
+					{Object.keys(initialTask).length > 0 ? "update" : "add"} a task.
 				</DialogContentText>
-				<TextField
-					label="Title"
-					type="text"
-					autoFocus
-					margin="dense"
-					fullWidth
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-				/>
-				<TextField
-					label="Description"
-					margin="dense"
-					multiline
-					rows={4}
-					fullWidth
+				<Title value={title} onChange={(e) => setTitle(e.target.value)} />
+				<Description
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
 				/>
-				<FormControl fullWidth margin="dense">
-					<InputLabel label="priority-label">Priority</InputLabel>
-					<Select
-						label="priority-label"
-						value={priority}
-						onChange={(e) => setPriority(e.target.value)}
-					>
-						<MenuItem value="1">1</MenuItem>
-						<MenuItem value="2">2</MenuItem>
-						<MenuItem value="3">3</MenuItem>
-						<MenuItem value="4">4</MenuItem>
-						<MenuItem value="5">5</MenuItem>
-					</Select>
-				</FormControl>
-				<TextField
-					label="Deadline"
-					margin="dense"
-					type="date"
-					fullWidth
-					sx={{
-						"& .MuiInputBase-input": {
-							// Style the input field
-							color: showFormat ? "black" : "transparent", // Transparent color when not focused
-							transition: "color 0.2s ease-in-out",
-						},
-					}}
+				<Priority
+					value={priority}
+					onChange={(e) => setPriority(e.target.value)}
+				/>
+				<Deadline
 					value={deadline}
 					onChange={(e) => setDeadline(e.target.value)}
-					onFocus={handleFocus}
-					onBlur={handleBlur}
-					placeholder="Deadline" // Set placeholder for out-of-focus state
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button type="cancel" onClick={handleClose} sx={{color:"#e91e63"}}>
+				<Button type="cancel" onClick={handleClose} sx={{ color: "#e91e63" }}>
 					Cancel
 				</Button>
-				<Button type="submit" onClick={handleSubmit} sx={{color:"#009688"}}>
+				<Button type="submit" onClick={handleSubmit} sx={{ color: "#009688" }}>
 					Submit
 				</Button>
 			</DialogActions>
