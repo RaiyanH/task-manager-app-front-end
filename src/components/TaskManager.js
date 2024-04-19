@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TaskForm from "./TaskForm";
 import TaskDisplayCard from "./TaskDisplayCard";
-import { Button, Grid, MenuItem, FormControl, Select } from "@mui/material";
+import { Button, Grid, MenuItem, Select } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 const TaskManager = () => {
@@ -14,12 +14,14 @@ const TaskManager = () => {
 	// State to hold the currently selected task for editing
 	const [selectedTask, setSelectedTask] = useState(null);
 
-	// Default to show all tasks' catagories
-	const [selectedCategory, setSelectedCategory] = useState("all");
+	// Default to show all tasks' status
+	const [selectedStatus, setSelectedStatus] = useState("all");
+
+	console.log("Selected Status:", selectedStatus);
 
 	// Function to add a new task
 	const handleAddTask = (newTask) => {
-		setTasks([...tasks, newTask]); // Spread operator for immutability
+		setTasks((prevTasks) => [...prevTasks, newTask]); // Spread operator for immutability
 		setIsFormOpen(false); // Close the form after adding
 	};
 
@@ -65,9 +67,16 @@ const TaskManager = () => {
 	};
 
 	// Function to handle user selecting a category filter
-	const handleCategoryChange = (event) => {
-		setSelectedCategory(event.target.value);
+	const handleStatusChange = (event) => {
+		setSelectedStatus(event.target.value);
 	};
+
+	// Function to filter tasks based on selected category
+	const filteredTasks = tasks.filter((task) => {
+		if (selectedStatus === "all") return true;
+		// Instead of strict equality, check if the category exists in the task
+		return task.status && task.status.includes(selectedStatus);
+	});
 
 	return (
 		<div>
@@ -81,19 +90,29 @@ const TaskManager = () => {
 				}}
 			>
 				<Select
-					value={selectedCategory}
-					onChange={handleCategoryChange}
+					value={selectedStatus}
+					onChange={handleStatusChange}
 					style={{ color: "white", marginRight: "10px", fontSize: "16px" }}
+					sx={{
+						"& .MuiSelect-icon": {
+							// Target the icon element
+							color: "white",
+						},
+					}}
 				>
 					<MenuItem value="all">All Tasks</MenuItem>
-					<MenuItem value="to-do">To Do</MenuItem>
-					<MenuItem value="progress">In Progress</MenuItem>
-					<MenuItem value="completed">Completed</MenuItem>
-					<MenuItem value="done">Done</MenuItem>
+					<MenuItem value="To do">To Do</MenuItem>
+					<MenuItem value="Progress">In Progress</MenuItem>
+					<MenuItem value="Completed">Completed</MenuItem>
 				</Select>
 				<Button
 					size="large"
-					style={{ color: "white", fontSize: "16px", textTransform: "none", paddingRight:"20px" }}
+					style={{
+						color: "white",
+						fontSize: "16px",
+						textTransform: "none",
+						paddingRight: "20px",
+					}}
 					aria-label="add"
 					onClick={handleOpenForm}
 				>
@@ -110,30 +129,71 @@ const TaskManager = () => {
 					setIsFormOpen={setIsFormOpen}
 				/>
 			)}
-			<Grid
-				container
-				justifyContent={"left"}
-				alignItems={"left"}
-				spacing={2}
-				padding={"20px"}
-			>
-				{tasks.map((task) => (
-					<Grid
-						item
-						key={task}
-						xs={12}
-						sm={6}
-						md={6}
-						lg={3}
-						style={{ minWidth: "450px", width: "100%" }} // Adjust minWidth as needed
-					>
-						<TaskDisplayCard
-							task={task}
-							onDelete={() => handleDeleteTask(task)}
-							onEdit={() => handleEditTask(task)}
-						/>
-					</Grid>
-				))}
+			<Grid container spacing={2} padding={"20px"}>
+				<h2 style={{ width: "100%", paddingLeft: "20px" }}>To Do</h2>
+				{filteredTasks
+					.filter((task) => task.status === "To do")
+					.map((task) => (
+						<Grid
+							item
+							key={task.title} // Use a unique identifier (e.g., task.id) if available
+							xs={12}
+							sm={6}
+							md={3}
+							lg={3}
+							style={{ minWidth: "450px", width: "100%" }}
+						>
+							<TaskDisplayCard
+								task={task}
+								onDelete={() => handleDeleteTask(task)}
+								onEdit={() => handleEditTask(task)}
+							/>
+						</Grid>
+					))}
+			</Grid>
+			<Grid container spacing={2} padding={"20px"}>
+				<h2 style={{ width: "100%", paddingLeft: "20px" }}>In Progress</h2>
+				{filteredTasks
+					.filter((task) => task.status === "Progress")
+					.map((task) => (
+						<Grid
+							item
+							key={task.title}
+							xs={12}
+							sm={6}
+							md={3}
+							lg={3}
+							style={{ minWidth: "450px", width: "100%" }}
+						>
+							<TaskDisplayCard
+								task={task}
+								onDelete={() => handleDeleteTask(task)}
+								onEdit={() => handleEditTask(task)}
+							/>
+						</Grid>
+					))}
+			</Grid>
+			<Grid container spacing={2} padding={"20px"}>
+				<h2 style={{ width: "100%", paddingLeft: "20px" }}>Completed</h2>
+				{filteredTasks
+					.filter((task) => task.status === "Completed")
+					.map((task) => (
+						<Grid
+							item
+							key={task.title}
+							xs={6}
+							sm={6}
+							md={3}
+							lg={3}
+							style={{ minWidth: "450px", width: "100%" }}
+						>
+							<TaskDisplayCard
+								task={task}
+								onDelete={() => handleDeleteTask(task)}
+								onEdit={() => handleEditTask(task)}
+							/>
+						</Grid>
+					))}
 			</Grid>
 		</div>
 	);

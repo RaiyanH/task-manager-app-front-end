@@ -12,6 +12,7 @@ import Title from "./Title";
 import Description from "./Description";
 import Priority from "./Priority";
 import Deadline from "./Deadline";
+import Status from "./Status";
 
 const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 	const [title, setTitle] = useState(
@@ -27,6 +28,10 @@ const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 		initialTask.deadline ? initialTask.deadline : ""
 	);
 
+	const [status, setStatus] = useState(
+		initialTask.status ? initialTask.status : "To do"
+	);
+
 	const handleClose = () => {
 		if (
 			Object.keys(initialTask).length === 0 ||
@@ -36,24 +41,31 @@ const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 			setIsFormOpen(false);
 		} else {
 			// Update operation: close without resetting
-			onSubmit({ title: "", description: "", priority: "3", deadline: "" });
+			onSubmit({
+				title: "",
+				description: "",
+				priority: "3",
+				deadline: "",
+				status: "To do",
+			});
 		}
 	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		//onSubmit({ title, priority, description, deadline });
+		//onSubmit({ title, priority, description, deadline, status });
 		const updatedData = {
 			title,
 			description,
 			priority,
 			deadline,
+			status,
 		};
 
 		if (Object.keys(initialTask).length > 0) {
 			onSubmit(updatedData); // Pass updated data for edits
 		} else {
-			onSubmit({ title, description, priority, deadline }); // New task data
+			onSubmit({ title, description, priority, deadline, status }); // New task data
 		}
 
 		setIsFormOpen(false);
@@ -81,6 +93,10 @@ const TaskForm = ({ initialTask, onSubmit, isFormOpen, setIsFormOpen }) => {
 				<Deadline
 					value={deadline}
 					onChange={(e) => setDeadline(e.target.value)}
+				/>
+				<Status
+					value={status}
+					onChange={(e) => setStatus(e.target.value)}
 				/>
 			</DialogContent>
 			<DialogActions>

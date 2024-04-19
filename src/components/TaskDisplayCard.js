@@ -35,6 +35,9 @@ const TaskDisplayCard = ({ task, onDelete, onEdit }) => {
 				<Typography variant="body3" color="text.secondary" noWrap p={1}>
 					Deadline: {task.deadline}
 				</Typography>
+        <Typography variant="body3" color="text.secondary" noWrap p={1}>
+					Status: {task.status}
+				</Typography>
 			</CardContent>
 			<div
 				style={{
