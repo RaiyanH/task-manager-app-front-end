@@ -1,12 +1,15 @@
 import "./App.css";
 import Box from "@mui/material/Box";
 import TaskManager from "./components/TaskManager";
-import SearchAppBar from "./components/NavBar";
 
 function App() {
 	return (
 		<div className="App">
-			<SearchAppBar></SearchAppBar>
+			<header className="titleHeader">
+				<h1>Jumbo</h1>
+				<h5>Manage your large tasks!</h5>
+			</header>
+			<header class="header"></header>
 			<Box
 				sx={{
 					minHeight: "100vh", // Ensures form fills viewport height

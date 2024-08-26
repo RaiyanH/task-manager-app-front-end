@@ -7,7 +7,6 @@ import {
 	DialogContentText,
 	Button,
 } from "@mui/material";
-
 import Title from "./Title";
 import Description from "./Description";
 import Priority from "./Priority";
@@ -42,27 +41,9 @@ const TaskForm = ({ initialTask = {}, onSubmit, isFormOpen, setIsFormOpen }) => 
 		}
 	}, [initialTask]);
 
-	// const handleClose = () => {
-	// 	if (
-	// 		Object.keys(initialTask).length === 0 ||
-	// 		Object.keys(initialTask).length > 0
-	// 	) {
-	// 		// Add operation: reset form and close
-	// 		setIsFormOpen(false);
-	// 	} else {
-	// 		// Update operation: close without resetting
-	// 		onSubmit({
-	// 			title: "",
-	// 			description: "",
-	// 			priority: "3",
-	// 			deadline: "",
-	// 			status: "To do",
-	// 		});
-	// 	}
-	// };
 	const handleClose = () => {
 		setIsFormOpen(false)
-		if (initialTask.id === false){
+		if (initialTask.id === false) {
 			resetForm();
 		}
 	}
@@ -75,35 +56,16 @@ const TaskForm = ({ initialTask = {}, onSubmit, isFormOpen, setIsFormOpen }) => 
 		setStatus("To do");
 	};
 
-	// const handleSubmit = (event) => {
-	// 	event.preventDefault();
-
-	// 	const updatedData = {
-	// 		title,
-	// 		description,
-	// 		priority,
-	// 		deadline,
-	// 		status,
-	// 	};
-
-	// 	if (Object.keys(initialTask).length > 0) {
-	// 		onSubmit(updatedData); // Pass updated data for edits
-	// 	} else {
-	// 		onSubmit({ title, description, priority, deadline, status }); // New task data
-	// 	}
-
-	// 	setIsFormOpen(false);
-	// };
 	const handleSubmit = (event) => {
 		event.preventDefault(); //precentDefault() what is its purpose as it it did not get shown as an option by intellij
-		const updatedData = {title, description, priority, deadline, status,}
-		if (initialTask.id){
-			onSubmit({...initialTask, ...updatedData}) //Merge with initial Task to keep  the id for updates
+		const updatedData = { title, description, priority, deadline, status, }
+		if (initialTask.id) {
+			onSubmit({ ...initialTask, ...updatedData }) //Merge with initial Task to keep  the id for updates
 		} else {
 			onSubmit(updatedData)
 		}
 		setIsFormOpen(false)
-		if (initialTask.id === false){
+		if (initialTask.id === false) {
 			resetForm();
 		}
 	}
