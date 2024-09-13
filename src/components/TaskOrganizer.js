@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, MenuItem, Select } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const TaskOrganizer = ({ value, onChange, onClick }) => {
 
@@ -34,15 +34,16 @@ const TaskOrganizer = ({ value, onChange, onClick }) => {
             <Button
                 size="large"
                 style={{
+                    textTransform: "none",
                     color: "white",
                     fontSize: "16px",
-                    textTransform: "none",
                     paddingRight: "20px",
+                    gap: "10px"
                 }}
                 aria-label="add"
                 onClick={onClick}
             >
-                <AddIcon /> Add Task
+                <AddCircleIcon />Add Task
             </Button>
         </section>
     )

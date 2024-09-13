@@ -29,23 +29,11 @@ const TaskDisplayCard = ({ task, onDelete, onEdit }) => {
 				<Typography variant="body2" color="text.secondary" noWrap p={1}>
 					{task.description?.length > 0 ? (task.description.length > 2 ? `${twoLine}...` : twoLine) : 'No Description Provided'}
 				</Typography>
-				<Chip
-					label={`Priority: ${task.priority}`} color="primary" style={{ margin: '4px' }}
-				/>
-				<Chip label={`Deadline: ${task.deadline}`} color="secondary" style={{ margin: '4px' }}
-				/>
-				<Chip label={`Status: ${task.status}`} color="default" style={{ margin: '4px' }}
-				/>
-
+				<Chip label={`Priority: ${task.priority}`} color="primary" style={{ margin: '4px' }} />
+				<Chip label={`Deadline: ${task.deadline}`} color="secondary" style={{ margin: '4px' }} />
+				<Chip label={`Status: ${task.status}`} color="default" style={{ margin: '4px' }} />
 			</CardContent>
-			<div
-				style={{
-					display: "flex",
-					justifyContent: "space-between",
-					alignItems: "center",
-					padding: "8px",
-				}}
-			>
+			<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "4px" }} >
 				<IconButton onClick={onDelete} aria-label="delete" p={1} sx={{ color: "#e91e63" }}>
 					<DeleteIcon />
 				</IconButton>

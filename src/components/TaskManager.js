@@ -4,6 +4,9 @@ import TaskDisplayCard from "./TaskDisplayCard";
 import TaskOrganizer from "./TaskOrganizer";
 import "../styles/TaskManager.css";
 import { v4 as uuidv4 } from 'uuid';
+import PendingIcon from '@mui/icons-material/Pending';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const TaskManager = () => {
 
@@ -84,7 +87,9 @@ const TaskManager = () => {
 				}
 				<section className="taskContainer" style={{ fontFamily: "Arial" }}>
 					<section className="taskColumn">
-						<h3 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "5px 0 5px 25px" }}>To Do</h3>
+						<h4 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "10px 0 10px 20px", display: "flex", alignItems: "center", gap: "10px" }}>
+							<PendingIcon />To Do
+						</h4>
 						{filteredTasks.filter((task) => task.status === "To do")
 							.map((task) =>
 							(<article key={task.id}>
@@ -96,7 +101,9 @@ const TaskManager = () => {
 							</article>))}
 					</section>
 					<section className="taskColumn">
-						<h3 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "5px 0 5px 25px" }}>In Progress</h3>
+						<h4 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "10px 0 10px 20px", display: "flex", alignItems: "center", gap: "10px" }}>
+							<HourglassBottomIcon /> In Progress
+						</h4>
 						{filteredTasks.filter((task) => task.status === "Progress")
 							.map((task) =>
 							(<article key={task.id}>
@@ -108,7 +115,9 @@ const TaskManager = () => {
 							</article>))}
 					</section>
 					<section className="taskColumn">
-						<h3 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "5px 0 5px 25px" }}>Completed</h3>
+						<h4 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "10px 0 10px 20px", display: "flex", alignItems: "center", gap: "10px" }}>
+							<CheckCircleIcon />Completed
+						</h4>
 						{filteredTasks.filter((task) => task.status === "Completed")
 							.map((task) =>
 							(<article key={task.id}>
