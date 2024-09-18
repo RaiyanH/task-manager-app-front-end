@@ -4,9 +4,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 const TaskDisplayCard = ({ task, onDelete, onEdit }) => {
-	const placeholder = task.title ? task.title : "\u200B";
 
-	const twoLine = task.description?.slice(0, task.description.indexOf("\n"));
+	const placeholder = task.taskTitle ? task.taskTitle : "\u200B";
+	const twoLine = task.taskDescription?.slice(0, task.taskDescription.indexOf("\n"));
 
 	return (
 		<Card
@@ -27,11 +27,11 @@ const TaskDisplayCard = ({ task, onDelete, onEdit }) => {
 					{placeholder}
 				</Typography>
 				<Typography variant="body2" color="text.secondary" noWrap p={1}>
-					{task.description?.length > 0 ? (task.description.length > 2 ? `${twoLine}...` : twoLine) : 'No Description Provided'}
+					{task.taskDescription?.length > 0 ? (task.taskDescription.length > 2 ? `${twoLine}...` : twoLine) : 'No Description Provided'}
 				</Typography>
-				<Chip label={`Priority: ${task.priority}`} color="primary" style={{ margin: '4px' }} />
-				<Chip label={`Deadline: ${task.deadline}`} color="secondary" style={{ margin: '4px' }} />
-				<Chip label={`Status: ${task.status}`} color="default" style={{ margin: '4px' }} />
+				<Chip label={`Status: ${task.taskStatus}`} color="default" style={{ margin: '4px' }} />
+				<Chip label={`Priority: ${task.taskPriority}`} color="primary" style={{ margin: '4px' }} />
+				<Chip label={`Deadline: ${task.taskDeadline}`} color="secondary" style={{ margin: '4px' }} />
 			</CardContent>
 			<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "4px" }} >
 				<IconButton onClick={onDelete} aria-label="delete" p={1} sx={{ color: "#e91e63" }}>

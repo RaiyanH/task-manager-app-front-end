@@ -14,30 +14,30 @@ import Deadline from "./Deadline";
 import Status from "./Status";
 
 const TaskForm = ({ initialTask = {}, onSubmit, isFormOpen, setIsFormOpen }) => {
-	const [title, setTitle] = useState(
-		initialTask.title ? initialTask.title : ""
+	const [taskTitle, setTaskTitle] = useState(
+		initialTask.taskTitle ? initialTask.title : ""
 	);
-	const [description, setDescription] = useState(
-		initialTask.description ? initialTask.description : ""
+	const [taskDescription, setTaskDescription] = useState(
+		initialTask.taskDescription ? initialTask.taskDescription : ""
 	);
-	const [priority, setPriority] = useState(
-		initialTask.priority ? initialTask.priority : "3"
+	const [taskPriority, setTaskPriority] = useState(
+		initialTask.taskPriority ? initialTask.taskPriority : "3"
 	);
-	const [deadline, setDeadline] = useState(
-		initialTask.deadline ? initialTask.deadline : ""
+	const [taskDeadline, setTaskDeadline] = useState(
+		initialTask.taskDeadline ? initialTask.taskDeadline : ""
 	);
-	const [status, setStatus] = useState(
-		initialTask.status ? initialTask.status : "To do"
+	const [taskStatus, setTaskStatus] = useState(
+		initialTask.taskStatus ? initialTask.taskStatus : "To do"
 	);
 
 	// Sync state with initialTask when it changes
 	useEffect(() => {
 		if (initialTask) {
-			setTitle(initialTask.title || "");
-			setDescription(initialTask.description || "");
-			setPriority(initialTask.priority || "3");
-			setDeadline(initialTask.deadline || "");
-			setStatus(initialTask.status || "To do");
+			setTaskTitle(initialTask.taskTitle || "");
+			setTaskDescription(initialTask.taskDescription || "");
+			setTaskPriority(initialTask.taskPriority || "3");
+			setTaskDeadline(initialTask.taskDeadline || "");
+			setTaskStatus(initialTask.taskStatus || "To do");
 		}
 	}, [initialTask]);
 
@@ -49,18 +49,18 @@ const TaskForm = ({ initialTask = {}, onSubmit, isFormOpen, setIsFormOpen }) => 
 	}
 
 	const resetForm = () => {
-		setTitle("");
-		setDescription("");
-		setPriority("3");
-		setDeadline("");
-		setStatus("To do");
+		setTaskTitle("");
+		setTaskDescription("");
+		setTaskPriority("3");
+		setTaskDeadline("");
+		setTaskStatus("To do");
 	};
 
 	const handleSubmit = (event) => {
-		event.preventDefault(); //precentDefault() what is its purpose as it it did not get shown as an option by intellij
-		const updatedData = { title, description, priority, deadline, status, }
+		event.preventDefault(); //precentDefault() what is its purpose as it it did not get shown as an option by intellij?
+		const updatedData = { taskTitle, taskDescription, taskPriority, taskDeadline, taskStatus }
 		if (initialTask.id) {
-			onSubmit({ ...initialTask, ...updatedData }) //Merge with initial Task to keep  the id for updates
+			onSubmit({ ...initialTask, ...updatedData }) //Merge with initial Task to keep the id for updates
 		} else {
 			onSubmit(updatedData)
 		}
@@ -79,22 +79,22 @@ const TaskForm = ({ initialTask = {}, onSubmit, isFormOpen, setIsFormOpen }) => 
 				<DialogContentText>
 					Please fill out the form to{" "} {initialTask.id ? "update" : "add"} a task.
 				</DialogContentText>
-				<Title value={title} onChange={(e) => setTitle(e.target.value)} />
+				<Title value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)} />
 				<Description
-					value={description}
-					onChange={(e) => setDescription(e.target.value)}
+					value={taskDescription}
+					onChange={(e) => setTaskDescription(e.target.value)}
 				/>
 				<Priority
-					value={priority}
-					onChange={(e) => setPriority(e.target.value)}
+					value={taskPriority}
+					onChange={(e) => setTaskPriority(e.target.value)}
 				/>
 				<Deadline
-					value={deadline}
-					onChange={(e) => setDeadline(e.target.value)}
+					value={taskDeadline}
+					onChange={(e) => setTaskDeadline(e.target.value)}
 				/>
 				<Status
-					value={status}
-					onChange={(e) => setStatus(e.target.value)}
+					value={taskStatus}
+					onChange={(e) => setTaskStatus(e.target.value)}
 				/>
 			</DialogContent>
 			<DialogActions>

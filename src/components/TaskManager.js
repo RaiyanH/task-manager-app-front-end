@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TaskForm from "./TaskForm";
 import TaskDisplayCard from "./TaskDisplayCard";
 import TaskOrganizer from "./TaskOrganizer";
 import "../styles/TaskManager.css";
-import { v4 as uuidv4 } from 'uuid';
 import PendingIcon from '@mui/icons-material/Pending';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import axios from "axios";
 
 const TaskManager = () => {
 
@@ -17,39 +17,60 @@ const TaskManager = () => {
 
 	console.log("Select Status:", selectedStatus, "Render cycle:", new Date().toISOString());
 
+	//Fetch tasks from the backend when the component mounts
+	useEffect(() => {
+		axios.get("http://localhost:8080/api/tasks")
+			.then(response => {
+				console.log("API Response:", response.data); // Debugging: see the actual data
+				if (Array.isArray(response.data)) {
+					setTasks(response.data); // Only set if it's an array
+				} else {
+					console.error("API did not return an array:", response.data);
+					setTasks([]); // Default to an empty array if the response is invalid
+				}
+			})
+			.catch(error => {
+				console.error("Error fetching tasks:", error);
+				setTasks([]); // Set an empty array on error
+			});
+	}, []);
+
 	const handleAddTask = (newTask) => {
-		const taskId = { id: uuidv4(), ...newTask };
-		console.log(taskId)
-		setTasks((prevTasks) => [...prevTasks, taskId]);
+		console.log('New Task to add:', newTask);
+		axios.post('http://localhost:8080/api/tasks/addTask', newTask)
+			.then(response => {
+				setTasks((prevTasks) => [...prevTasks, response.data]);
+			})
+			.catch(error => console.error("Error adding tasks: ", error));
 		setIsFormOpen(false);
 	};
 
 	const handleDeleteTask = (taskToDelete) => {
-		//Go through the tasks array and return a new array by removing task matching task that has to be deleted
-		const newTasks = tasks.filter(task => task.id !== taskToDelete.id);
-		//Extra code to ensure that the newTasks array is with deleted task before returning the new array 
-		if (newTasks.length !== tasks.length) {
-			setTasks(newTasks);
-		} else {
-			console.warn("Task to delete was not found.");
-		}
+		axios.delete(`http://localhost:8080/api/tasks/deleteTaskById/${taskToDelete.id}`)
+			.then(() => {
+				setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskToDelete.id));
+			})
+			.catch(error => console.error("Error deleting task: ", error))
 	};
 
 	const handleOpenForm = () => {
+		console.log("Opening form for new task");
 		setSelectedTask(null); // Clear selected task for adding
 		setIsFormOpen(true);
 	};
 
 	const handleEditTask = (updatedTask) => {
+		setSelectedTask(updatedTask)
 		setIsFormOpen(true)
 		console.log("Editing task with id:", updatedTask.id);
 		console.log("Updated task data:", updatedTask);
-		setTasks((prevTasks) =>
-			prevTasks.map((t) =>
-				t.id === updatedTask.id ? updatedTask : t
-			)
-		);
-		setSelectedTask(updatedTask)
+		axios.put(`http://localhost:8080/api/tasks/${updatedTask.id}`, updatedTask)
+			.then(response => {
+				setTasks((prevTasks) =>
+					prevTasks.map((task) => (task.id === response.data.id ? response.data : task))
+				);
+			})
+			.catch(error => console.error("Error updating task: ", error));
 	};
 
 	// Function to handle user selecting a category filter
@@ -60,9 +81,9 @@ const TaskManager = () => {
 	const filteredTasks = tasks.filter((task) => {
 		console.log("Filtering Task:", task); //this produces an object with key and value pairs
 		if (selectedStatus === "all") return true;
-		console.log("Task Status:", task.status, "Selected Status:", selectedStatus); // Debugging line: this debugging line does not appear at all
+		console.log("Task Status:", task.taskStatus, "Selected Status:", selectedStatus); // Debugging line: this debugging line does not appear at all
 		// Instead of strict equality, check if the category exists in the task
-		return task.status && task.status.includes(selectedStatus);
+		return task.taskStatus && task.taskStatus.includes(selectedStatus);
 	});
 
 
@@ -90,7 +111,7 @@ const TaskManager = () => {
 						<h4 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "10px 0 10px 20px", display: "flex", alignItems: "center", gap: "10px" }}>
 							<PendingIcon />To Do
 						</h4>
-						{filteredTasks.filter((task) => task.status === "To do")
+						{filteredTasks.filter((task) => task.taskStatus === "To do")
 							.map((task) =>
 							(<article key={task.id}>
 								<TaskDisplayCard
@@ -104,7 +125,7 @@ const TaskManager = () => {
 						<h4 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "10px 0 10px 20px", display: "flex", alignItems: "center", gap: "10px" }}>
 							<HourglassBottomIcon /> In Progress
 						</h4>
-						{filteredTasks.filter((task) => task.status === "Progress")
+						{filteredTasks.filter((task) => task.taskStatus === "Progress")
 							.map((task) =>
 							(<article key={task.id}>
 								<TaskDisplayCard
@@ -118,7 +139,7 @@ const TaskManager = () => {
 						<h4 style={{ backgroundColor: "#222831", borderRadius: "5px", padding: "10px 0 10px 20px", display: "flex", alignItems: "center", gap: "10px" }}>
 							<CheckCircleIcon />Completed
 						</h4>
-						{filteredTasks.filter((task) => task.status === "Completed")
+						{filteredTasks.filter((task) => task.taskStatus === "Completed")
 							.map((task) =>
 							(<article key={task.id}>
 								<TaskDisplayCard
