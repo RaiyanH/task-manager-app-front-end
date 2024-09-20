@@ -17,40 +17,45 @@ const TaskManager = () => {
 
 	console.log("Select Status:", selectedStatus, "Render cycle:", new Date().toISOString());
 
-	//Fetch tasks from the backend when the component mounts
+	axios.defaults.baseURL = 'http://localhost:8080/api/tasks';
+
+	//useEffect allows for fetching tasks from the backend when the component mounts
 	useEffect(() => {
-		axios.get("http://localhost:8080/api/tasks")
-			.then(response => {
-				console.log("API Response:", response.data); // Debugging: see the actual data
+		const handleGetAllTask = async () => {
+			try {
+				const response = await axios.get("");
+				console.log("API Response:", response.data);
 				if (Array.isArray(response.data)) {
 					setTasks(response.data); // Only set if it's an array
 				} else {
 					console.error("API did not return an array:", response.data);
 					setTasks([]); // Default to an empty array if the response is invalid
 				}
-			})
-			.catch(error => {
+			} catch (error) {
 				console.error("Error fetching tasks:", error);
 				setTasks([]); // Set an empty array on error
-			});
+			}
+		}
+		handleGetAllTask();
 	}, []);
 
-	const handleAddTask = (newTask) => {
-		console.log('New Task to add:', newTask);
-		axios.post('http://localhost:8080/api/tasks/addTask', newTask)
-			.then(response => {
-				setTasks((prevTasks) => [...prevTasks, response.data]);
-			})
-			.catch(error => console.error("Error adding tasks: ", error));
+	const handleAddTask = async (newTask) => {
+		try {
+			const response = await axios.post('/addTask', newTask);
+			setTasks((prevTasks) => [...prevTasks, response.data]);
+		} catch (error) {
+			console.error("Error adding tasks: ", error);
+		};
 		setIsFormOpen(false);
 	};
 
-	const handleDeleteTask = (taskToDelete) => {
-		axios.delete(`http://localhost:8080/api/tasks/deleteTaskById/${taskToDelete.id}`)
-			.then(() => {
-				setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskToDelete.id));
-			})
-			.catch(error => console.error("Error deleting task: ", error))
+	const handleDeleteTask = async (taskToDelete) => {
+		try {
+			await axios.delete(`/deleteTaskById/${taskToDelete.id}`);
+			setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskToDelete.id));
+		} catch (error) {
+			console.error("Error deleting task: ", error);
+		}
 	};
 
 	const handleOpenForm = () => {
@@ -59,18 +64,17 @@ const TaskManager = () => {
 		setIsFormOpen(true);
 	};
 
-	const handleEditTask = (updatedTask) => {
+	const handleEditTask = async (updatedTask) => {
 		setSelectedTask(updatedTask)
 		setIsFormOpen(true)
-		console.log("Editing task with id:", updatedTask.id);
-		console.log("Updated task data:", updatedTask);
-		axios.put(`http://localhost:8080/api/tasks/${updatedTask.id}`, updatedTask)
-			.then(response => {
-				setTasks((prevTasks) =>
-					prevTasks.map((task) => (task.id === response.data.id ? response.data : task))
-				);
-			})
-			.catch(error => console.error("Error updating task: ", error));
+		try {
+			const response = await axios.put(`/${updatedTask.id}`, updatedTask)
+			setTasks((prevTasks) =>
+				prevTasks.map((task) => (task.id === response.data.id ? response.data : task))
+			);
+		} catch (error) {
+			console.error("Error updating task: ", error)
+		}
 	};
 
 	// Function to handle user selecting a category filter
@@ -85,7 +89,6 @@ const TaskManager = () => {
 		// Instead of strict equality, check if the category exists in the task
 		return task.taskStatus && task.taskStatus.includes(selectedStatus);
 	});
-
 
 	return (
 		<div className="container">
