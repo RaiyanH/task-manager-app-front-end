@@ -1,18 +1,23 @@
 import React from "react";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-const Priority = ({ value, onChange }) => {
-	console.log("Current priority:", value);
+interface PriorityProps {
+	priority: string;
+	onChange: (event: SelectChangeEvent) => void;
+}
+
+const Priority: React.FC<PriorityProps> = ({ priority, onChange }) => {
+	console.log("Current priority:", priority);
 
 	return (
 		<FormControl fullWidth margin="dense">
-			<InputLabel label="priority-label">Priority</InputLabel>
+			<InputLabel id="priority-label">Priority</InputLabel>
 			<Select
 				label="priority-label"
-				value={value}
+				value={priority}
 				onChange={onChange}
 			>
 				<MenuItem value="1">1</MenuItem>

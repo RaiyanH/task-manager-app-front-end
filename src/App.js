@@ -9,7 +9,7 @@ function App() {
 				<h1>Jumbo</h1>
 				<h5>Manage your large tasks!</h5>
 			</header>
-			<header class="header"></header>
+			<header className="header"></header>
 			<Box
 				sx={{
 					minHeight: "100vh", // Ensures form fills viewport height

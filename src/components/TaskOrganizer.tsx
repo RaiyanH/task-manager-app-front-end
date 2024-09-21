@@ -1,8 +1,14 @@
 import React from 'react';
-import { Button, MenuItem, Select } from "@mui/material";
+import { Button, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-const TaskOrganizer = ({ value, onChange, onClick }) => {
+interface TaskOrganizerProps {
+    value: string;
+    onChange: (event: SelectChangeEvent) => void;
+    onClick: () => void;
+}
+
+const TaskOrganizer: React.FC<TaskOrganizerProps> = ({ value, onChange, onClick }) => {
 
     return (
         <section

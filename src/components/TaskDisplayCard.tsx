@@ -2,23 +2,30 @@ import React from "react";
 import { Card, CardContent, Typography, IconButton, Chip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { Task } from "./types";
 
-const TaskDisplayCard = ({ task, onDelete, onEdit }) => {
+interface TaskDisplayCardProps {
+	task: Task;
+	onDelete: () => void;
+	onEdit: () => void;
+}
+
+const TaskDisplayCard: React.FC<TaskDisplayCardProps> = ({ task, onDelete, onEdit }) => {
 
 	const placeholder = task.taskTitle ? task.taskTitle : "\u200B";
 	const twoLine = task.taskDescription?.slice(0, task.taskDescription.indexOf("\n"));
 
 	return (
 		<Card
-			style={{
+			sx={{
 				marginBottom: "20px",
 				display: "flex",
 				flexDirection: "column",
 				minWidth: "70px",
 				backgroundColor: "white",
 				borderRadius: "5px",
-				'&:hover': {
-					backgroundColor: "#e91e63",
+				"&:hover": {
+					backgroundColor: "#dcdcdc",
 				},
 			}}
 		>
@@ -34,10 +41,10 @@ const TaskDisplayCard = ({ task, onDelete, onEdit }) => {
 				<Chip label={`Deadline: ${task.taskDeadline}`} color="secondary" style={{ margin: '4px' }} />
 			</CardContent>
 			<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "4px" }} >
-				<IconButton onClick={onDelete} aria-label="delete" p={1} sx={{ color: "#e91e63" }}>
+				<IconButton onClick={onDelete} aria-label="delete" sx={{ color: "#e91e63", p: 1 }}>
 					<DeleteIcon />
 				</IconButton>
-				<IconButton onClick={onEdit} aria-label="edit" p={1} sx={{ color: "#009688" }}>
+				<IconButton onClick={onEdit} aria-label="edit" sx={{ color: "#009688", p: 1 }}>
 					<EditIcon />
 				</IconButton>
 			</div>

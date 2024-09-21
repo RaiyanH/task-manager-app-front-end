@@ -1,18 +1,23 @@
 import React from "react";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-const Status = ({ value, onChange }) => {
-	console.log("Current priority:", value);
+interface StatusProps {
+	status: string;
+	onChange: (event: SelectChangeEvent) => void;
+}
+
+const Status: React.FC<StatusProps> = ({ status, onChange }) => {
+	console.log("Current priority:", status);
 
 	return (
 		<FormControl fullWidth margin="dense">
-			<InputLabel label="catagory-label">Status</InputLabel>
+			<InputLabel id="catagory-label">Status</InputLabel>
 			<Select
 				label="catagory-label"
-				value={value}
+				value={status}
 				onChange={onChange}
 			>
 				<MenuItem value="To do">To do</MenuItem>
